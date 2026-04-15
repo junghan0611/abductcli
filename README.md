@@ -1,6 +1,5 @@
-# abductcli
+# abductcli — 에이전트 친화적 양적추론 판단 엔진. Clojure.
 
-에이전트 친화적 마진 분석 CLI. Clojure.
 
 운영 데이터(엑셀/시트/CSV)를 원본 손실 없이 모으고,
 AI가 이해 가능한 JSONL 구조로 재표현하여,

@@ -146,3 +146,31 @@ clj -T:build uber
 
 - [[denote:20260410T144158][전략기획실 엑셀 데이터의 AI 이해용 JSONB 데이터레이크]]
 - [[denote:20250509T135957][©캐글(kaggle) ©허깅페이스(huggingface) 데이터과학 머신러닝 커뮤니티 플랫폼]]
+
+## 다음 세션 — TODO
+
+온보딩 검증 기준: [[denote:20260415T154505][abductcli 담당자 온보딩 검증]]
+
+### 우선순위 1: 시계열 tx 보강
+- region grain 실제 출력
+- 일별/주간 tx 생성 (현재는 category/sub-category 집계만)
+- baseline을 이동평균으로 교체 (현재는 전체 평균)
+- delta를 시계열 기준으로 재설계
+
+### 우선순위 2: signal retrieval 실장 (현재 가장 큰 갭)
+- anomaly 레코드에 :time 필드 추가
+- context 날짜 ±window 필터 실제 적용 (현재는 전체 조회 후 정렬만)
+- entity/geo/domain 매칭 점수 추가
+- relevance breakdown 설명 가능하게
+
+### 우선순위 3: drill 설명면
+- detect 후 anomaly 1건을 깊게 파고드는 drill 커맨드
+- 관련 tx, 하위 category, 할인율, signal 후보를 묶어 설명
+
+### 우선순위 4: backtest 자동화
+- 현재는 사람이 direction/timing/magnitude 직접 입력
+- 후속 tx와 자동 비교하는 평가 함수 추가
+
+### 정리 사항
+- README.md / AGENTS.md에 남은 margincli 잔재 정리 → abductcli 정체성으로 통일
+- "양적추론 판단 엔진" 정체성을 README 첫 줄에 반영
