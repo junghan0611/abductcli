@@ -114,6 +114,112 @@ clj -M:run suggest-signals --anomaly anom-001
 - BigDecimal margin calc/reverse engine
 - Kaggle Superstore CSV import
 
+## Why This Is Hard — Cognitive Limits
+
+Frontier models can look up "global banana production" and return a number.
+That's not the problem. The problem is:
+
+**Humans cannot hold scale in their heads.**
+
+- I live in Suwon, South Korea. I can roughly picture Suwon in my mind.
+  But Russia? How much bigger is it? Lake Baikal — is that a lake or a sea?
+  I know the numbers exist, but I cannot *feel* the difference between
+  400 km² and 31,722 km².
+
+- I know the Manhattan Project employed ~125,000 people at peak.
+  But I cannot picture what 125,000 people working in secret factory cities
+  actually looks like. My mental model tops out at maybe a few hundred faces.
+
+- A datacenter has 100,000 GPUs. Each GPU is the size of a book.
+  100,000 books — that's a library. But a library doesn't consume 150 MW.
+  The analogy breaks. My intuition doesn't transfer across dimensions
+  (count → volume → power → cost).
+
+This is not a reasoning problem. It's a **cognitive representation problem.**
+Abductive reasoning helps because it forces you to:
+
+1. Pick a specific number that surprises you
+2. Ask "what would have to be true for this number to exist?"
+3. Find fragments from other domains that constrain the answer
+4. Write it down (memo) so you can check later
+
+The act of writing a memo — even a wrong one — is more useful than
+the feeling of "wow, that's big." The memo is falsifiable. The feeling isn't.
+
+## Sample Questions — Scale Abduction Candidates
+
+These are the kind of questions abductcli is for. Each one starts with
+a number that doesn't fit in your head, and asks what hidden quantities
+must be true.
+
+### Q1: Banana Supply Chain
+A banana costs 2,000 won (~$1.50) at my corner store. It's heavy,
+it's perishable, it traveled from Southeast Asia or Latin America.
+- How many hectares of land grow bananas worldwide?
+- How many humans work in banana farming and logistics?
+- How many refrigerated container ships are moving bananas right now?
+- How can this cost only $1.50?
+
+**LLM quick answer (unverified):** ~120M tons/year global production,
+~5M hectares, 30,000-40,000 ship transits/year.
+**Confidence:** Low. These are pattern-matched numbers, no source.
+**Verification data:** FAO FAOSTAT (production), UN Comtrade (trade),
+shipping industry reports.
+
+### Q2: Manhattan Project Scale
+The US built secret factory cities to produce a few kg of enriched uranium.
+- How many people were involved? (Peak? Total over project life?)
+- How large were the facilities physically?
+- What was the daily resource consumption (power, water, materials)?
+- How did they keep 100,000+ people secret?
+
+**LLM quick answer (unverified):** ~125,000 peak, possibly 400,000-600,000
+total. Oak Ridge ~75,000 workers. K-25 was "the largest building in the world."
+Cost ~$2B in 1945 dollars.
+**Confidence:** Medium for headline numbers, low for details.
+**Verification data:** DOE declassified documents, Rhodes "The Making of
+the Atomic Bomb," OSTI digital archives.
+
+### Q3: LLM Inference Infrastructure
+Millions of people now ask Claude Opus what to eat for lunch.
+- How many GPUs serve Anthropic's traffic?
+- How large is the datacenter footprint?
+- What is the power consumption?
+- What does one Opus inference cost in electricity?
+
+**LLM quick answer (unverified):** 10,000-100,000 GPUs (range too wide
+to be useful). Maybe 50-200 MW. Per-inference cost unknown.
+**Confidence:** Very low. I'm guessing about my own infrastructure.
+**Verification data:** Semianalysis reports, ML papers on per-token compute,
+public cloud pricing as proxy, Anthropic's own disclosures.
+
+### Q4: Battle of Stalingrad Logistics
+~2M total casualties over 5 months. The Soviets ferried 160,000 troops
+across the Volga under fire.
+- What tonnage of ammunition was consumed daily?
+- How many trains supplied the Soviet side?
+- What was the food/water logistics for a besieged city of rubble?
+- What scale of medical infrastructure handled the wounded?
+
+**LLM quick answer (unverified):** Daily ammunition in thousands of tons.
+Specific numbers uncertain. Soviet logistics through Volga crossings
+were the bottleneck.
+**Confidence:** Low. Eastern Front casualty numbers are notoriously disputed.
+**Verification data:** Krivosheev "Soviet Casualties and Combat Losses,"
+Beevor "Stalingrad," Soviet military archives (partially declassified).
+
+### How to Use These
+
+Each question follows the same pattern:
+1. **Anomaly:** A number that doesn't fit in your head
+2. **Signal candidates:** Data fragments from verifiable sources
+3. **Memo:** Your best guess + which fragments support it
+4. **Evaluation:** Compare your memo against actual data when found
+
+The goal is not to answer these questions once. It's to build a practice
+of tracking guesses, checking them, and learning which cross-domain
+intuitions are calibrated and which are garbage.
+
 ## Tech Stack
 
 - **Clojure 1.12+** — deps.edn
