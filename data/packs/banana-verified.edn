@@ -1,0 +1,80 @@
+;; Banana supply chain — verified data from FAO/FAOSTAT + trade statistics
+;; Collected 2026-04-16. Sources cited per entry.
+;; These are the "ground truth" to evaluate LLM-generated estimates against.
+{:name "banana-verified-fao"
+ :desc "Verified banana supply chain data — FAO, trade statistics, industry reports"
+ :contexts
+ [{:ctx-type   "verified"
+   :domain     "agriculture"
+   :time-start "2023-01-01"
+   :time-end   "2023-12-31"
+   :title      "Global banana production 136-139M tons/year (FAO 2022-2023)"
+   :source     "FAOSTAT"
+   :confidence "verified"
+   :value      139
+   :unit       "million-tons"
+   :reference  "fao.org/faostat, ourworldindata.org/grapher/banana-production"}
+
+  {:ctx-type   "verified"
+   :domain     "agriculture"
+   :time-start "2023-01-01"
+   :time-end   "2023-12-31"
+   :title      "Banana cultivation area 5.88M hectares worldwide (FAO 2023)"
+   :source     "FAOSTAT"
+   :confidence "verified"
+   :value      5.88
+   :unit       "million-hectares"
+   :reference  "fao.org/faostat"}
+
+  {:ctx-type   "verified"
+   :domain     "logistics"
+   :time-start "2024-01-01"
+   :time-end   "2024-12-31"
+   :title      "Banana export volume 19.7-24.7M tons/year (FAO/trade 2024)"
+   :source     "FAOSTAT"
+   :confidence "verified"
+   :value      20
+   :unit       "million-tons"
+   :reference  "worldstopexports.com/bananas-exports-country, fao.org"}
+
+  {:ctx-type   "verified"
+   :domain     "trade"
+   :time-start "2024-01-01"
+   :time-end   "2024-12-31"
+   :title      "Ecuador #1 exporter (5.7M tons), Guatemala #2 (2.8M), Costa Rica #3 (2.4M), Philippines #4 (2.3M)"
+   :source     "industry-report"
+   :confidence "verified"
+   :value      5.7
+   :unit       "million-tons-ecuador"
+   :reference  "worldstopexports.com/bananas-exports-country"}
+
+  {:ctx-type   "verified"
+   :domain     "trade"
+   :time-start "2024-01-01"
+   :time-end   "2024-12-31"
+   :title      "Global banana export value $15.3 billion (2024)"
+   :source     "industry-report"
+   :confidence "verified"
+   :value      15.3
+   :unit       "billion-usd"
+   :reference  "worldstopexports.com/bananas-exports-country"}
+
+  {:ctx-type   "verified"
+   :domain     "agriculture"
+   :time-start "2024-01-01"
+   :title      "Ecuador banana industry employs 380K workers directly, 2M direct+indirect"
+   :source     "industry-report"
+   :confidence "verified"
+   :value      380000
+   :unit       "workers-ecuador"
+   :reference  "ILO, bananalink.org.uk"}
+
+  {:ctx-type   "indicator"
+   :domain     "agriculture"
+   :time-start "2023-01-01"
+   :title      "Cavendish variety = ~50M tons/year, under half of global production"
+   :source     "industry-report"
+   :confidence "verified"
+   :value      50
+   :unit       "million-tons"
+   :reference  "FAOSTAT, wikifarmer.com"}]}

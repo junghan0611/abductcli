@@ -68,16 +68,20 @@ clj -M:run suggest-signals --anomaly anom-001
 - Context registration (EDN pack bulk import)
 - Signal relevance scoring (domain/entity/time/source weighted average)
 - Auto-generated memo with drill-down hypothesis
+- `question` command — human-declared anomaly without CSV
+- `verify` command — claim vs verified data accuracy scoring
+- Cross-domain signal matching (token extraction + domain matching)
+- First real evaluation: banana production 120M vs FAO 139M → "reasonable" (14% error)
 - Compact JSONL export (agent-consumable surface)
-- 23 tests, 79 assertions passing
+- 24 tests, 88 assertions passing
 
 **Not working yet:**
-- Only one dataset (Superstore retail). Cross-domain is the goal, not single-domain.
 - Time-window filtering not applied (full scan + sort only)
-- Entity matching hardcoded (Furniture/Technology/Office Supplies)
+- Entity matching partially hardcoded (Superstore keywords) alongside token extraction
 - No generic import — each dataset needs its own normalizer
 - Backtest is manual input only
 - Pipeline wipes all data on each run (demo-first)
+- Only two data sources verified (Superstore CSV, FAO banana)
 
 ## Pipeline
 
@@ -92,6 +96,13 @@ clj -M:run suggest-signals --anomaly anom-001
 ```
 
 ## Changelog
+
+### 2026-04-16: first real verification — banana claims vs FAO data
+- `verify` command: claim vs verified data with accuracy scoring
+- FAO FAOSTAT banana data pack (verified): production, area, exports, rankings
+- First evaluation result: LLM underestimates by ~15%, order of magnitude correct
+- Philippines #2 exporter claim was wrong (actually #4)
+- Open question: is consistent 15% underestimate a systematic LLM bias or coincidence?
 
 ### 2026-04-16: identity pivot — from margin tool to scale reasoning
 - Recognized that Superstore demo was proof-of-concept, not the destination
@@ -165,6 +176,17 @@ it's perishable, it traveled from Southeast Asia or Latin America.
 **Confidence:** Low. These are pattern-matched numbers, no source.
 **Verification data:** FAO FAOSTAT (production), UN Comtrade (trade),
 shipping industry reports.
+
+**First verification (2026-04-16):**
+| Claim | LLM | FAO Actual | Error | Verdict |
+|-------|-----|------------|-------|---------|
+| Production | ~120M tons | 136-139M tons | 14% | reasonable |
+| Cultivation area | ~5M ha | 5.88M ha | 15% | reasonable |
+| Export volume | ~20M tons | 19.7-24.7M tons | ~0% | accurate |
+| #2 exporter | Philippines | Guatemala (PH is #4) | wrong | rough-estimate |
+
+LLM consistently underestimates by ~15%. Order of magnitude correct.
+The Philippines ranking was factually wrong. These patterns matter.
 
 ### Q2: Manhattan Project Scale
 The US built secret factory cities to produce a few kg of enriched uranium.

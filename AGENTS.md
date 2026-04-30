@@ -161,28 +161,37 @@ clj -T:build uber
 
 ## Current State (2026-04-16)
 
-**Working (single-domain demo):**
+**Working:**
 - pipeline command — full Superstore flow in one execution
+- `question` command — human-declared anomaly without CSV
+- `verify` command — claim vs verified data accuracy scoring
 - signal relevance weighted average (domain/entity/time/source)
+- cross-domain signal matching (token extraction + domain matching)
 - sub-category drill-down → memo hypothesis
 - compact JSONL export
+- 24 tests, 88 assertions
+
+**First real evaluation (banana):**
+- LLM claimed ~120M tons, FAO says 136-139M → 14% error, "reasonable"
+- LLM consistently underestimates by ~15%, order of magnitude correct
+- Philippines #2 exporter was factually wrong (actually #4)
 
 **Known limits:**
-- Only Superstore dataset — no cross-domain reasoning yet
 - time-window filtering not applied (full scan + sort only)
-- entity matching hardcoded (Furniture/Technology/Office Supplies only)
+- entity matching partially hardcoded alongside token extraction
 - pipeline wipes all data on each run (demo-first)
 - auto-hypothesis is template-based, not LLM-generated
+- only two data sources verified (Superstore CSV, FAO banana)
 
 ## TODO — Next Sessions
 
 Onboarding ref: [[denote:20260415T154505][abductcli 담당자 온보딩 검증]]
 
-### Priority 1: Second dataset — cross-domain connection
-- Add a non-retail dataset (agriculture, energy, population, or logistics)
-- Make the import layer generic enough for different CSV schemas
-- Test: can a signal from domain A explain an anomaly in domain B?
-- This is the existential test for abductcli's identity
+### Priority 1: More verifications — build evaluation track record
+- Manhattan Project: verify LLM claims against DOE declassified data
+- Or pick another domain (energy, logistics) for next question→verify cycle
+- Track patterns: does LLM consistently underestimate? By how much?
+- This builds the evaluation criteria (COS Q3) empirically, not theoretically
 
 ### Priority 2: Generic import + context sources
 - Import normalizer should be configurable per dataset (column mapping)

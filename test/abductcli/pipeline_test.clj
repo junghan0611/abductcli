@@ -117,3 +117,42 @@
       (is (= 0.7 (:magnitude-score e)))
       ;; composite score: 0.5*1 + 0.25*1 + 0.25*0.7 = 0.925 → 93
       (is (= 93 (:composite-score e))))))
+
+;; ── Verification (claim vs verified data) ────────
+
+(deftest verify-claim-test
+  (testing "LLM claim vs verified data — accuracy scoring"
+    ;; Setup: question → memo
+    (let [a (anom/declare-anomaly!
+             {:claim "Global banana production ~120M tons"
+              :number 120000000 :unit "tons"
+              :entity "banana" :domain "agriculture"})
+          m (memo/write-memo
+             {:subject     (:id a)
+              :hypothesis  "LLM claims ~120M tons"
+              :evidence    []
+              :author      "agent:abductcli"})]
+      ;; accurate case: 120 vs 139 → ~14% error
+      (let [v1 (memo/verify-claim (:id m)
+                 {:claim-value 120 :verified-value 139
+                  :unit "million-tons" :source "FAOSTAT"
+                  :claim-text "LLM estimate" :verified-text "FAO actual"})]
+        (is (= "verification" (:type v1)))
+        (is (= "reasonable" (:verdict v1)))
+        (is (= 86 (:ratio v1)))       ;; 120/139 ≈ 86%
+        (is (= 14 (:error-pct v1)))
+        (is (:order-match v1)))
+
+      ;; exact match case
+      (let [v2 (memo/verify-claim (:id m)
+                 {:claim-value 20 :verified-value 20
+                  :unit "million-tons" :source "FAOSTAT"})]
+        (is (= "accurate" (:verdict v2)))
+        (is (= 100 (:accuracy-score v2))))
+
+      ;; wrong case: claim 2 vs actual 4 (rank)
+      (let [v3 (memo/verify-claim (:id m)
+                 {:claim-value 2 :verified-value 4
+                  :unit "rank" :source "industry-report"})]
+        (is (= "rough-estimate" (:verdict v3)))
+        (is (= 50 (:error-pct v3)))))))

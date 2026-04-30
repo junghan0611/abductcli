@@ -273,6 +273,31 @@
         (println)
         (println (str "  Next: register context, then suggest-signals --anomaly " (:id a)))))))
 
+;; ── 커맨드: verify ────────────────────────────────
+
+(defn cmd-verify [args]
+  (let [opts  (parse-opts args)
+        memo-id        (get-opt opts "memo")
+        claim-value    (some-> (get-opt opts "claim-value") Double/parseDouble)
+        verified-value (some-> (get-opt opts "verified-value") Double/parseDouble)
+        unit           (get-opt opts "unit")
+        source         (or (get-opt opts "source") "manual")
+        claim-text     (get-opt opts "claim-text")
+        verified-text  (get-opt opts "verified-text")]
+    (if (or (nil? memo-id) (nil? claim-value) (nil? verified-value))
+      (do (println "Usage: abductcli verify --memo <id> --claim-value N --verified-value N --unit U")
+          (println "  Optional: --source FAOSTAT --claim-text \"...\" --verified-text \"...\""))
+      (let [v (memo/verify-claim memo-id
+                {:claim-value    claim-value
+                 :verified-value verified-value
+                 :unit           unit
+                 :source         source
+                 :claim-text     claim-text
+                 :verified-text  verified-text})]
+        (println "abductcli — claim verification")
+        (println)
+        (memo/print-verification v)))))
+
 ;; ── 커맨드: pipeline ──────────────────────────────
 
 (defn- clean-data-files!
@@ -456,6 +481,7 @@
       "export"           (cmd-export rest-args)
       "write-memo"       (cmd-write-memo rest-args)
       "backtest"         (cmd-backtest rest-args)
+      "verify"           (cmd-verify rest-args)
       "pipeline"         (cmd-pipeline rest-args)
       "question"         (cmd-question rest-args)
       ;; 도움말
@@ -482,6 +508,7 @@
         (println "Judgment:")
         (println "  write-memo --anomaly <id> --hypothesis \"...\" --evidence \"sig-001\"")
         (println "  backtest --memo <id> --direction D --timing T --magnitude M")
+        (println "  verify --memo <id> --claim-value N --verified-value N --unit U")
         (println)
         (println "Export:")
         (println "  export --format raw|compact|scenario [--anomaly <id>]")
