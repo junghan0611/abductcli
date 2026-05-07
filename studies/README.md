@@ -1,7 +1,15 @@
 # studies — 한 챕터씩 풀어보는 폴더
 
 abductcli 통합 코드(`src/`)는 따로 있다. 이 폴더는 **문제 한 편씩 풀이**하는 곳.
-양적추론 책의 챕터, GLG 본인의 lived anomaly — 둘 다 같은 형식으로 푼다.
+양적추론 책의 챕터, GLG 본인이 마주친 *스케일이 안 잡히는 장면* — 둘 다 같은 형식으로 푼다.
+
+## 진입 명령 — `/scaleplay`
+
+새 study 한 판은 `/scaleplay <장면 한 줄>` 명령으로 시작한다.
+
+명령 정의: `~/repos/gh/agent-config/commands/scaleplay.md`
+
+이 명령이 박은 어휘 규칙 · 절대 원칙 · 한 판 절차가 이 폴더의 운영 규칙이다.
 
 ## 왜 폴더로 나누어 푸나
 
